@@ -32,7 +32,7 @@ func TestOffset(t *testing.T) {
 		{
 			Topic:      "a",
 			BrokerName: "B-a",
-			QueueId:    2,
+			QueueId:    1,
 		}: {
 			Locked: true,
 		},
