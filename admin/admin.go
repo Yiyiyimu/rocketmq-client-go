@@ -731,7 +731,7 @@ func (a *admin) GetConsumerRunningInfo(ctx context.Context, group string, client
 	switch response.Code {
 	case internal.ResSuccess:
 		info := &internal.ConsumerRunningInfo{}
-		err := json.Unmarshal(response.Body, info)
+		err := info.Decode(response.Body)
 		if err != nil {
 			rlog.Error("unmarshal failed", map[string]interface{}{
 				rlog.LogKeyUnderlayError: err,

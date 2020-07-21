@@ -107,7 +107,7 @@ func TestResetConsumerOffset(t *testing.T) {
 
 func TestConcurrentSearchkey(t *testing.T) {
 	for i := 0; i < 100; i++ {
-		TestSearchKey()
+		TestSearchKey(t)
 	}
 }
 
