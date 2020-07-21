@@ -255,6 +255,7 @@ func TestGetConsumerRunningInfo() {
 	log.Printf("consumer info: %#v", ids)
 }
 
+/*
 func TestCreateTopic() {
 	testAdmin := initAdmin()
 
@@ -272,7 +273,7 @@ func TestDeleteTopic() {
 	assert(err)
 	log.Printf("consumer info: %#v", ids)
 }
-
+*/
 func assert(err error) {
 	if err != nil {
 		panic(err)
