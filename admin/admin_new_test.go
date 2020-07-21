@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package main
+package admin
 
 import (
 	"context"
@@ -23,16 +23,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/apache/rocketmq-client-go/v2/admin"
-
 	"github.com/apache/rocketmq-client-go/v2/primitive"
 )
 
-func main() {
-	TestFetchConsumerOffset()
-}
 
-func initAdmin() admin.Admin {
+func initAdmin(t *testing.T) Admin {
 	var err error
 
 	testAdmin, err := admin.NewAdmin(admin.WithResolver(primitive.NewPassthroughResolver([]string{"127.0.0.1:9876"})))
@@ -40,8 +35,8 @@ func initAdmin() admin.Admin {
 	return testAdmin
 }
 
-func TestFetchConsumerOffset() {
-	testAdmin := initAdmin()
+func TestFetchConsumerOffset(t *testing.T) {
+	testAdmin := initAdmin(t)
 
 	ctx := context.Background()
 	topic := "Test"
@@ -60,8 +55,8 @@ func TestFetchConsumerOffset() {
 	log.Printf("get offset: %v", offset)
 }
 
-func TestFetchConsumerOffsets() {
-	testAdmin := initAdmin()
+func TestFetchConsumerOffsets(t *testing.T) {
+	testAdmin := initAdmin(t)
 
 	ctx := context.Background()
 	topic := "Test"
@@ -75,7 +70,7 @@ func TestFetchConsumerOffsets() {
 }
 
 func TestSearchOffset(t *testing.T) {
-	testAdmin := initAdmin()
+	testAdmin := initAdmin(t)
 
 	ctx := context.Background()
 	topic := "Test"
@@ -92,9 +87,9 @@ func TestSearchOffset(t *testing.T) {
 	log.Printf("Offset val: %v", offset)
 }
 
-func TestResetConsumerOffset() {
-	TestFetchConsumerOffset()
-	testAdmin := initAdmin()
+func TestResetConsumerOffset(t *testing.T) {
+	TestFetchConsumerOffset(t)
+	testAdmin := initAdmin(t)
 
 	ctx := context.Background()
 	topic := "Test"
@@ -116,8 +111,8 @@ func TestConcurrentSearchkey(t *testing.T) {
 	}
 }
 
-func TestSearchKey() {
-	testAdmin := initAdmin()
+func TestSearchKey(t *testing.T) {
+	testAdmin := initAdmin(t)
 
 	ctx := context.Background()
 	topic := "Test"
@@ -130,8 +125,8 @@ func TestSearchKey() {
 	}
 }
 
-func TestMinOffset() {
-	testAdmin := initAdmin()
+func TestMinOffset(t *testing.T) {
+	testAdmin := initAdmin(t)
 
 	ctx := context.Background()
 	topic := "Test"
@@ -148,7 +143,7 @@ func TestMinOffset() {
 }
 
 func TestMaxOffset(t *testing.T) {
-	testAdmin := initAdmin()
+	testAdmin := initAdmin(t)
 
 	ctx := context.Background()
 	topic := "Test"
@@ -164,8 +159,8 @@ func TestMaxOffset(t *testing.T) {
 	log.Printf("get topic max Offset: %v", offset)
 }
 
-func TestMaxOffsets() {
-	testAdmin := initAdmin()
+func TestMaxOffsets(t *testing.T) {
+	testAdmin := initAdmin(t)
 
 	ctx := context.Background()
 	topic := "Test"
@@ -177,8 +172,8 @@ func TestMaxOffsets() {
 	}
 }
 
-func TestViewMessageByQueueOffset() {
-	testAdmin := initAdmin()
+func TestViewMessageByQueueOffset(t *testing.T) {
+	testAdmin := initAdmin(t)
 
 	ctx := context.Background()
 	topic := "Test"
@@ -201,7 +196,7 @@ func TestViewMessageByQueueOffset() {
 }
 
 func TestView(t *testing.T) {
-	testAdmin := initAdmin()
+	testAdmin := initAdmin(t)
 	topic := "Test"
 	_startTime := 1577203200000
 	_endTime := 1577289600000
@@ -231,40 +226,40 @@ func TestView(t *testing.T) {
 	}
 }
 
-func TestGetConsumerConnectionList() {
-	testAdmin := initAdmin()
+func TestGetConsumerConnectionList(t *testing.T) {
+	testAdmin := initAdmin(t)
 
 	ids, err := testAdmin.GetConsumerIdList(context.Background(), "test_group")
 	assert(err)
 	log.Printf("consumer ids: %v", ids)
 }
 
-func TestAllocation() {
-	testAdmin := initAdmin()
+func TestAllocation(t *testing.T) {
+	testAdmin := initAdmin(t)
 
 	alloc, err := testAdmin.Allocation(context.Background(), "test_group")
 	assert(err)
 	log.Printf("consumer alloc: %#v", alloc)
 }
 
-func TestGetConsumerRunningInfo() {
-	testAdmin := initAdmin()
+func TestGetConsumerRunningInfo(t *testing.T) {
+	testAdmin := initAdmin(t)
 
 	ids, err := testAdmin.GetConsumerRunningInfo(context.Background(), "test_group", "custom_client_id")
 	assert(err)
 	log.Printf("consumer info: %#v", ids)
 }
 
-func TestCreateTopic() {
-	testAdmin := initAdmin()
+func TestCreateTopic(t *testing.T) {
+	testAdmin := initAdmin(t)
 
 	ids, err := testAdmin.GetConsumerRunningInfo(context.Background(), "test_group", "custom_client_id")
 	assert(err)
 	log.Printf("consumer info: %#v", ids)
 }
 
-func TestDeleteTopic() {
-	testAdmin := initAdmin()
+func TestDeleteTopic(t *testing.T) {
+	testAdmin := initAdmin(t)
 
 	brokerAddressSet := testAdmin.GetBrokerClusterInfo(context.Background())
 
