@@ -745,6 +745,7 @@ func (a *admin) GetConsumerRunningInfo(ctx context.Context, group string, client
 	return nil, primitive.MQBrokerErr{ResponseCode: response.Code, ErrorMessage: response.Remark}
 }
 
+/*
 // CreateTopic create topic.
 func (a *admin) CreateTopic(ctx context.Context, mq *primitive.MessageQueue, defaultTopic string) error {
 	brokerAddr, err := a.getAddr(mq)
@@ -826,7 +827,7 @@ func (a *admin) GetBrokerClusterInfo(ctx context.Context) ([]*primitive.MessageE
 		rlog.Warning(fmt.Sprintf("unexpected response code: %d", response.Code), nil)
 	}
 }
-
+*/
 func (a *admin) Close() error {
 	a.closeOnce.Do(func() {
 		a.cli.Shutdown()
