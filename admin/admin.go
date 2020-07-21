@@ -745,6 +745,88 @@ func (a *admin) GetConsumerRunningInfo(ctx context.Context, group string, client
 	return nil, primitive.MQBrokerErr{ResponseCode: response.Code, ErrorMessage: response.Remark}
 }
 
+// CreateTopic create topic.
+func (a *admin) CreateTopic(ctx context.Context, mq *primitive.MessageQueue, defaultTopic string) error {
+	brokerAddr, err := a.getAddr(mq)
+	if err != nil {
+		return -1, err
+	}
+
+	request := &internal.GetCreateTopicRequestHeader{
+		Topic:           mq.Topic,
+		DefaultTopic:    defaultTopic,
+		ReadQueueNums:   mq.ReadQueueNums,
+		WriteQueueNums:  mq.WriteQueueNums,
+		Perm:            mq.Perm,
+		TopicFilterType: mq.TopicFilterType,
+		Order:           mq.Order,
+	}
+
+	cmd := remote.NewRemotingCommand(internal.ReqCreateTopic, request, nil)
+	return a.cli.InvokeSync(ctx, brokerAddr, cmd, 5*time.Second)
+}
+
+// DeleteTopicInBroker delete topic in broker.
+func (a *admin) DeleteTopicInBroker(ctx context.Context, mq *primitive.MessageQueue) error {
+	brokerAddr, err := a.getAddr(mq)
+	if err != nil {
+		return -1, err
+	}
+
+	request := &internal.GetDeleteTopicRequestHeader{
+		Topic: mq.topic,
+	}
+
+	cmd := remote.NewRemotingCommand(internal.ReqDeleteTopicInBroker, request, nil)
+	return a.cli.InvokeSync(ctx, brokerAddr, cmd, 5*time.Second)
+}
+
+// DeleteTopicInNameServer delete topic in nameserver.
+func (a *admin) DeleteTopicInNameServer(ctx context.Context, mq *primitive.MessageQueue) error {
+	brokerAddr, err := a.getAddr(mq)
+	if err != nil {
+		return -1, err
+	}
+
+	request := &internal.GetDeleteTopicRequestHeader{
+		Topic: mq.topic,
+	}
+
+	cmd := remote.NewRemotingCommand(internal.ReqDeleteTopicInNameSrv, request, nil)
+	return a.cli.InvokeSync(ctx, brokerAddr, cmd, 5*time.Second)
+}
+
+// DeleteTopic delete topic in both broker and nameserver.
+func (a *admin) DeleteTopicInNameServer(ctx context.Context, mq *primitive.MessageQueue) error {
+	brokerAddr, err := a.getAddr(mq)
+	if err != nil {
+		return -1, err
+	}
+
+	request := &internal.GetDeleteTopicRequestHeader{
+		Topic: mq.topic,
+	}
+
+	cmd := remote.NewRemotingCommand(internal.ReqDeleteTopicInNameSrv, request, nil)
+	return a.cli.InvokeSync(ctx, brokerAddr, cmd, 5*time.Second)
+}
+
+func (a *admin) GetBrokerClusterInfo(ctx context.Context) ([]*primitive.MessageExt, error) {
+	cmd := remote.NewRemotingCommand(internal.ReqGetBrokerClusterInfo, request, nil)
+	response, err := a.cli.InvokeSync(ctx, brokerAddr, cmd, 3*time.Second)
+	if err != nil {
+		return -1, err
+	}
+
+	switch response.Code {
+	case internal.ResSuccess:
+		msgs := primitive.DecodeMessage(response.Body)
+		return msgs, nil
+	default:
+		rlog.Warning(fmt.Sprintf("unexpected response code: %d", response.Code), nil)
+	}
+}
+
 func (a *admin) Close() error {
 	a.closeOnce.Do(func() {
 		a.cli.Shutdown()
