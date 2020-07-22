@@ -28,7 +28,7 @@ import (
 
 const (
 	topic      = "TopicTest"
-	brokerName = "travis"
+	brokerName = "Default"
 )
 
 func initAdmin(t *testing.T) Admin {
