@@ -28,7 +28,7 @@ import (
 
 const (
 	topic      = "TopicTest"
-	brokerName = "Default"
+	brokerName = "localhost"
 )
 
 func initAdmin(t *testing.T) Admin {
@@ -39,6 +39,65 @@ func initAdmin(t *testing.T) Admin {
 	return testAdmin
 }
 
+/*
+func TestCreateTopic(t *testing.T) {
+	testAdmin := initAdmin(t)
+
+	mq := &primitive.MessageQueue{
+		Topic:      topic,
+		BrokerName: brokerName,
+		QueueId:    0,
+	}
+
+	alloc, err := testAdmin.CreateTopic(context.Background(), mq, "newOne")
+	assert(err)
+	log.Printf("consumer alloc: %#v", alloc)
+}
+
+func TestDeleteTopic(t *testing.T) {
+	testAdmin := initAdmin(t)
+
+	mq := &primitive.MessageQueue{
+		Topic:      topic,
+		BrokerName: brokerName,
+		QueueId:    0,
+	}
+
+	resBroker, resNameSrv, err := testAdmin.DeleteTopic(context.Background(), mq, "newOne", "DefaultCluster", "127.0.0.1:9876")
+	assert(err)
+	log.Printf("resBroker: %#v", resBroker)
+	log.Printf("resNameSrv: %#v", resNameSrv)
+}
+
+
+func TestTopicList(t *testing.T) {
+	testAdmin := initAdmin(t)
+
+	mq := &primitive.MessageQueue{
+		Topic:      topic,
+		BrokerName: brokerName,
+		QueueId:    0,
+	}
+
+	list := testAdmin.TopicList(context.Background(), mq)
+	//assert(err)
+	log.Printf("Topic List: %v", list)
+}
+
+func TestGetBrokerClusterInfo(t *testing.T) {
+	testAdmin := initAdmin(t)
+
+	mq := &primitive.MessageQueue{
+		Topic:      topic,
+		BrokerName: brokerName,
+		QueueId:    0,
+	}
+
+	list, err := testAdmin.GetBrokerClusterInfo(context.Background(), mq)
+	assert(err)
+	log.Printf("Broker Cluster Info: %#v", list)
+}
+*/
 func TestFetchConsumerOffset(t *testing.T) {
 	testAdmin := initAdmin(t)
 
@@ -87,6 +146,7 @@ func TestSearchOffset(t *testing.T) {
 	assert(err)
 	log.Printf("Offset val: %v", offset)
 }
+
 func TestResetConsumerOffset(t *testing.T) {
 	TestFetchConsumerOffset(t)
 	testAdmin := initAdmin(t)
@@ -219,11 +279,10 @@ func TestView(t *testing.T) {
 	}
 }
 
-/*
 func TestGetConsumerConnectionList(t *testing.T) {
 	testAdmin := initAdmin(t)
 
-	ids, err := testAdmin.GetConsumerIdList(context.Background(), "test_group")
+	ids, err := testAdmin.GetConsumerIdList(context.Background(), "consumer1")
 	assert(err)
 	log.Printf("consumer ids: %v", ids)
 }
@@ -231,38 +290,19 @@ func TestGetConsumerConnectionList(t *testing.T) {
 func TestAllocation(t *testing.T) {
 	testAdmin := initAdmin(t)
 
-	alloc, err := testAdmin.Allocation(context.Background(), "test_group")
+	alloc, err := testAdmin.Allocation(context.Background(), "consumer1")
 	assert(err)
 	log.Printf("consumer alloc: %#v", alloc)
 }
-*/
+
 func TestGetConsumerRunningInfo(t *testing.T) {
 	testAdmin := initAdmin(t)
 
-	ids, err := testAdmin.GetConsumerRunningInfo(context.Background(), "test_group", "custom_client_id")
+	ids, err := testAdmin.GetConsumerRunningInfo(context.Background(), "consumer1", "custom_client_id")
 	assert(err)
 	log.Printf("consumer info: %#v", ids)
 }
 
-/*
-func TestCreateTopic() {
-	testAdmin := initAdmin()
-
-	ids, err := testAdmin.GetConsumerRunningInfo(context.Background(), "test_group", "custom_client_id")
-	assert(err)
-	log.Printf("consumer info: %#v", ids)
-}
-
-func TestDeleteTopic() {
-	testAdmin := initAdmin()
-
-	brokerAddressSet := testAdmin.GetBrokerClusterInfo(context.Background())
-
-	ids, err := testAdmin.GetConsumerRunningInfo(context.Background(), "test_group", "custom_client_id")
-	assert(err)
-	log.Printf("consumer info: %#v", ids)
-}
-*/
 func assert(err error) {
 	if err != nil {
 		panic(err)

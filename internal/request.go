@@ -24,32 +24,33 @@ import (
 )
 
 const (
-	ReqSendMessage              = int16(10)
-	ReqPullMessage              = int16(11)
-	ReqQueryMessage             = int16(12)
-	ReqQueryConsumerOffset      = int16(14)
-	ReqUpdateConsumerOffset     = int16(15)
-	ReqCreateTopic              = int16(17)
-	ReqSearchOffsetByTimestamp  = int16(29)
-	ReqGetMaxOffset             = int16(30)
-	ReqGetMinOffset             = int16(31)
-	ReqViewMessageByID          = int16(33)
-	ReqHeartBeat                = int16(34)
-	ReqConsumerSendMsgBack      = int16(36)
-	ReqENDTransaction           = int16(37)
-	ReqGetConsumerListByGroup   = int16(38)
-	ReqLockBatchMQ              = int16(41)
-	ReqUnlockBatchMQ            = int16(42)
-	ReqGetRouteInfoByTopic      = int16(105)
-	ReqGetBrokerClusterInfo     = int16(106)
-	ReqSendBatchMessage         = int16(320)
-	ReqCheckTransactionState    = int16(39)
-	ReqNotifyConsumerIdsChanged = int16(40)
-	ReqDeleteTopicInBroker      = int16(215)
-	ReqDeleteTopicInNameSrv     = int16(216)
-	ReqResetConsuemrOffset      = int16(220)
-	ReqGetConsumerRunningInfo   = int16(307)
-	ReqConsumeMessageDirectly   = int16(309)
+	ReqSendMessage                   = int16(10)
+	ReqPullMessage                   = int16(11)
+	ReqQueryMessage                  = int16(12)
+	ReqQueryConsumerOffset           = int16(14)
+	ReqUpdateConsumerOffset          = int16(15)
+	ReqCreateTopic                   = int16(17)
+	ReqSearchOffsetByTimestamp       = int16(29)
+	ReqGetMaxOffset                  = int16(30)
+	ReqGetMinOffset                  = int16(31)
+	ReqViewMessageByID               = int16(33)
+	ReqHeartBeat                     = int16(34)
+	ReqConsumerSendMsgBack           = int16(36)
+	ReqENDTransaction                = int16(37)
+	ReqGetConsumerListByGroup        = int16(38)
+	ReqLockBatchMQ                   = int16(41)
+	ReqUnlockBatchMQ                 = int16(42)
+	ReqGetRouteInfoByTopic           = int16(105)
+	ReqGetBrokerClusterInfo          = int16(106)
+	ReqSendBatchMessage              = int16(320)
+	ReqCheckTransactionState         = int16(39)
+	ReqNotifyConsumerIdsChanged      = int16(40)
+	ReqGetAllTopicListFromNameServer = int16(206)
+	ReqDeleteTopicInBroker           = int16(215)
+	ReqDeleteTopicInNameSrv          = int16(216)
+	ReqResetConsuemrOffset           = int16(220)
+	ReqGetConsumerRunningInfo        = int16(307)
+	ReqConsumeMessageDirectly        = int16(309)
 )
 
 type SendMessageRequestHeader struct {
@@ -393,6 +394,17 @@ func (request *CreateTopicRequestHeader) Encode() map[string]string {
 	maps["topicFilterType"] = request.TopicFilterType
 	maps["topicSysFlag"] = fmt.Sprintf("%d", request.TopicSysFlag)
 	maps["order"] = strconv.FormatBool(request.Order)
+
+	return maps
+}
+
+type TopicListRequestHeader struct {
+	Topic string
+}
+
+func (request *TopicListRequestHeader) Encode() map[string]string {
+	maps := make(map[string]string)
+	maps["topic"] = request.Topic
 
 	return maps
 }
