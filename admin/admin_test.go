@@ -26,6 +26,11 @@ import (
 	"github.com/apache/rocketmq-client-go/v2/primitive"
 )
 
+const (
+	topic      = "TopicTest"
+	brokerName = "aa"
+)
+
 func initAdmin(t *testing.T) Admin {
 	var err error
 
@@ -38,12 +43,11 @@ func TestFetchConsumerOffset(t *testing.T) {
 	testAdmin := initAdmin(t)
 
 	ctx := context.Background()
-	topic := "Test"
 	group := "test_group"
 
 	mq := &primitive.MessageQueue{
 		Topic:      topic,
-		BrokerName: "sandbox_boe1",
+		BrokerName: brokerName,
 		QueueId:    0,
 	}
 	offset, err := testAdmin.FetchConsumerOffset(ctx, group, mq)
@@ -58,7 +62,6 @@ func TestFetchConsumerOffsets(t *testing.T) {
 	testAdmin := initAdmin(t)
 
 	ctx := context.Background()
-	topic := "Test"
 	group := "test_group"
 
 	offsets, err := testAdmin.FetchConsumerOffsets(ctx, topic, group)
@@ -72,12 +75,11 @@ func TestSearchOffset(t *testing.T) {
 	testAdmin := initAdmin(t)
 
 	ctx := context.Background()
-	topic := "Test"
 	tm, err := time.ParseInLocation("2006-01-02 15:04:05", "2019-11-03 19:00:00", time.Local)
 	assert(err)
 	mq := &primitive.MessageQueue{
 		Topic:      topic,
-		BrokerName: "Default",
+		BrokerName: brokerName,
 		QueueId:    1,
 	}
 
@@ -85,17 +87,15 @@ func TestSearchOffset(t *testing.T) {
 	assert(err)
 	log.Printf("Offset val: %v", offset)
 }
-
 func TestResetConsumerOffset(t *testing.T) {
 	TestFetchConsumerOffset(t)
 	testAdmin := initAdmin(t)
 
 	ctx := context.Background()
-	topic := "Test"
 	group := "test_group"
 	mq := &primitive.MessageQueue{
 		Topic:      topic,
-		BrokerName: "Default",
+		BrokerName: brokerName,
 		QueueId:    0,
 	}
 	offset := int64(272572362)
@@ -114,7 +114,6 @@ func TestSearchKey(t *testing.T) {
 	testAdmin := initAdmin(t)
 
 	ctx := context.Background()
-	topic := "Test"
 	key := "6716311733805435655"
 	maxNum := 32
 	msgs, err := testAdmin.SearchKey(ctx, topic, key, maxNum)
@@ -128,11 +127,10 @@ func TestMinOffset(t *testing.T) {
 	testAdmin := initAdmin(t)
 
 	ctx := context.Background()
-	topic := "Test"
 
 	mq := &primitive.MessageQueue{
 		Topic:      topic,
-		BrokerName: "Default",
+		BrokerName: brokerName,
 		QueueId:    0,
 	}
 	offset, err := testAdmin.MinOffset(ctx, mq)
@@ -145,11 +143,10 @@ func TestMaxOffset(t *testing.T) {
 	testAdmin := initAdmin(t)
 
 	ctx := context.Background()
-	topic := "Test"
 
 	mq := &primitive.MessageQueue{
 		Topic:      topic,
-		BrokerName: "Default",
+		BrokerName: brokerName,
 		QueueId:    0,
 	}
 	offset, err := testAdmin.MaxOffset(ctx, mq)
@@ -162,7 +159,6 @@ func TestMaxOffsets(t *testing.T) {
 	testAdmin := initAdmin(t)
 
 	ctx := context.Background()
-	topic := "Test"
 
 	offsets, err := testAdmin.MaxOffsets(ctx, topic)
 	assert(err)
@@ -175,7 +171,6 @@ func TestViewMessageByQueueOffset(t *testing.T) {
 	testAdmin := initAdmin(t)
 
 	ctx := context.Background()
-	topic := "Test"
 
 	offsets, err := testAdmin.MaxOffsets(ctx, topic)
 	assert(err)
@@ -196,7 +191,6 @@ func TestViewMessageByQueueOffset(t *testing.T) {
 
 func TestView(t *testing.T) {
 	testAdmin := initAdmin(t)
-	topic := "Test"
 	_startTime := 1577203200000
 	_endTime := 1577289600000
 
@@ -225,6 +219,7 @@ func TestView(t *testing.T) {
 	}
 }
 
+/*
 func TestGetConsumerConnectionList(t *testing.T) {
 	testAdmin := initAdmin(t)
 
@@ -240,7 +235,7 @@ func TestAllocation(t *testing.T) {
 	assert(err)
 	log.Printf("consumer alloc: %#v", alloc)
 }
-
+*/
 func TestGetConsumerRunningInfo(t *testing.T) {
 	testAdmin := initAdmin(t)
 
