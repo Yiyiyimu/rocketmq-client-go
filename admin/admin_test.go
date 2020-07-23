@@ -34,7 +34,7 @@ const (
 func initAdmin(t *testing.T) Admin {
 	var err error
 
-	testAdmin, err := NewAdmin(WithResolver(primitive.NewPassthroughResolver([]string{"12.24.123.243:9876"})))
+	testAdmin, err := NewAdmin(WithResolver(primitive.NewPassthroughResolver([]string{"127.0.0.1:9876"})))
 	assert(err)
 	return testAdmin
 }
