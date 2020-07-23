@@ -34,7 +34,7 @@ const (
 func initAdmin(t *testing.T) Admin {
 	var err error
 
-	testAdmin, err := NewAdmin(WithResolver(primitive.NewPassthroughResolver([]string{"127.0.0.1:9876"})))
+	testAdmin, err := NewAdmin(WithResolver(primitive.NewPassthroughResolver([]string{"12.24.123.243:9876"})))
 	assert(err)
 	return testAdmin
 }
@@ -42,7 +42,7 @@ func initAdmin(t *testing.T) Admin {
 func TestCreateTopic(t *testing.T) {
 	testAdmin := initAdmin(t)
 	log.Printf("testAdmin: %#v", testAdmin)
-	brokerAddr := "127.0.0.1:10911"
+	brokerAddr := "12.24.123.243:10911"
 
 	err := testAdmin.CreateTopic(
 		context.Background(),
