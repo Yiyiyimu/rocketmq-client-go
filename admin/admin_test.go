@@ -28,7 +28,7 @@ import (
 
 const (
 	topic      = "TopicTest"
-	brokerName = "localhost"
+	brokerName = "YoungPC"
 )
 
 func initAdmin(t *testing.T) Admin {
@@ -39,21 +39,31 @@ func initAdmin(t *testing.T) Admin {
 	return testAdmin
 }
 
+func TestCreateTopic(t *testing.T) {
+	testAdmin := initAdmin(t)
+	log.Printf("testAdmin: %#v", testAdmin)
+	brokerAddr := "127.0.0.1:10911"
+
+	err := testAdmin.CreateTopic(
+		context.Background(),
+		WithTopicCreate("newOne"),
+		WithBrokerAddr(brokerAddr),
+	)
+	assert(err)
+	log.Printf("create topic to %v success", brokerAddr)
+}
+
 /*
 func TestCreateTopic(t *testing.T) {
 	testAdmin := initAdmin(t)
+	newTopic := "newOne"
+	brokerAddr := "172.29.193.44:10911"
 
-	mq := &primitive.MessageQueue{
-		Topic:      topic,
-		BrokerName: brokerName,
-		QueueId:    0,
-	}
-
-	alloc, err := testAdmin.CreateTopic(context.Background(), mq, "newOne")
+	err := testAdmin.CreateTopic(context.Background(), newTopic, brokerAddr)
 	assert(err)
-	log.Printf("consumer alloc: %#v", alloc)
+	log.Printf("create topic to %v success", brokerAddr)
 }
-
+*/
 func TestDeleteTopic(t *testing.T) {
 	testAdmin := initAdmin(t)
 
@@ -62,14 +72,23 @@ func TestDeleteTopic(t *testing.T) {
 		BrokerName: brokerName,
 		QueueId:    0,
 	}
+	topic := "newOne"
+	clusterName := "DefaultCluster"
+	nameSrvAddr := "127.0.0.1:9876"
 
-	resBroker, resNameSrv, err := testAdmin.DeleteTopic(context.Background(), mq, "newOne", "DefaultCluster", "127.0.0.1:9876")
+	err := testAdmin.DeleteTopic(
+		context.Background(),
+		mq,
+		WithTopicDelete(topic),
+		WithClusterName(clusterName),
+		WithNameSrvAddr(nameSrvAddr),
+	)
 	assert(err)
-	log.Printf("resBroker: %#v", resBroker)
-	log.Printf("resNameSrv: %#v", resNameSrv)
+	log.Printf("delete topic [%v] from cluster [%v] success", topic, clusterName)
+	log.Printf("delete topic [%v] from NameServer success", topic)
 }
 
-
+/*
 func TestTopicList(t *testing.T) {
 	testAdmin := initAdmin(t)
 
@@ -98,6 +117,7 @@ func TestGetBrokerClusterInfo(t *testing.T) {
 	log.Printf("Broker Cluster Info: %#v", list)
 }
 */
+
 func TestFetchConsumerOffset(t *testing.T) {
 	testAdmin := initAdmin(t)
 
